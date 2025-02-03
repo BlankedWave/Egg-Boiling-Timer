@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Egg Boiling Timer</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
   <style>
     body {
       background-image: url('https://static.vecteezy.com/system/resources/previews/020/379/086/non_2x/cute-egg-yolk-in-kawaii-concept-free-vector.jpg'); /* Updated cute kitchen background */
@@ -13,12 +14,33 @@
       background-position: center;
       background-color: #121212; /* Dark background fallback */
     }
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      padding: 20px;
+      border: 4px solid #fbbf24;
+      border-radius: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      text-align: center;
+    }
+    .popup.show {
+      display: block;
+    }
   </style>
 </head>
 
 <body class="flex items-center justify-center min-h-screen bg-black bg-opacity-90">
   <audio autoplay loop>
     <source src="https://www.bensound.com/bensound-music/bensound-littleidea.mp3" type="audio/mpeg"> <!-- New cheerful background music -->
+  </audio>
+
+  <audio id="popupSound">
+    <source src="https://www.soundjay.com/button/sounds/button-3.mp3" type="audio/mpeg"> <!-- Popup sound -->
   </audio>
 
   <div class="bg-gray-800 bg-opacity-95 p-8 rounded-2xl shadow-2xl text-center w-96 border-4 border-yellow-500">
@@ -46,6 +68,11 @@
     <div id="timer" class="text-4xl font-bold text-red-400 mt-6"></div>
   </div>
 
+  <div id="popup" class="popup">
+    <h2 class="text-2xl font-bold text-yellow-500">🎉 Your Egg is Done! 🎉</h2>
+    <p class="mt-2 text-gray-800">Enjoy your perfectly boiled egg!</p>
+  </div>
+
   <script>
     function startTimer(minutes) {
       let seconds = minutes * 60;
@@ -59,10 +86,26 @@
 
         if (seconds <= 0) {
           clearInterval(window.timerInterval);
-          alert('Your egg is ready!');
+          showPopup();
         }
         seconds--;
       }, 1000);
+    }
+
+    function showPopup() {
+      const popup = document.getElementById('popup');
+      const popupSound = document.getElementById('popupSound');
+      popup.classList.add('show');
+      popupSound.play();
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+
+      setTimeout(() => {
+        popup.classList.remove('show');
+      }, 3000);
     }
   </script>
 </body>
