@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Egg Timer App</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-image: url('https://images.unsplash.com/photo-1585238342023-2d1a6a6d8c3f'); /* Cute kitchen background */
+      background-size: cover;
+      background-position: center;
+    }
+  </style>
+</head>
+
+<body class="flex items-center justify-center min-h-screen bg-gray-100 bg-opacity-80">
+  <audio autoplay loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mpeg"> <!-- Royalty-free background music -->
+  </audio>
+
+  <div class="bg-white bg-opacity-90 p-8 rounded-2xl shadow-2xl text-center w-96">
+    <img src="https://cdn.pixabay.com/photo/2016/04/01/11/27/egg-1307604_960_720.png" alt="Cute Egg Logo" class="mx-auto mb-4 rounded-full w-24 h-24">
+    <h1 class="text-3xl font-bold text-yellow-500 mb-6">Egg Timer</h1>
+
+    <div class="space-y-4">
+      <button onclick="startTimer(3)" class="w-full bg-yellow-300 hover:bg-yellow-400 text-white py-2 rounded-xl text-xl">Soft Boiled (3 min)</button>
+      <button onclick="startTimer(5)" class="w-full bg-yellow-400 hover:bg-yellow-500 text-white py-2 rounded-xl text-xl">Medium Boiled (5 min)</button>
+      <button onclick="startTimer(7)" class="w-full bg-yellow-500 hover:bg-yellow-600 text-white py-2 rounded-xl text-xl">Hard Boiled (7 min)</button>
+      <button onclick="startTimer(10)" class="w-full bg-yellow-600 hover:bg-yellow-700 text-white py-2 rounded-xl text-xl">Extra Hard (10 min)</button>
+    </div>
+
+    <div id="timer" class="text-4xl font-bold text-red-500 mt-6"></div>
+  </div>
+
+  <script>
+    function startTimer(minutes) {
+      let seconds = minutes * 60;
+      const timerDisplay = document.getElementById('timer');
+      clearInterval(window.timerInterval);
+
+      window.timerInterval = setInterval(() => {
+        const min = Math.floor(seconds / 60);
+        const sec = seconds % 60;
+        timerDisplay.textContent = `${min}:${sec.toString().padStart(2, '0')}`;
+
+        if (seconds <= 0) {
+          clearInterval(window.timerInterval);
+          alert('Your egg is ready!');
+        }
+        seconds--;
+      }, 1000);
+    }
+  </script>
+</body>
+
+</html>
